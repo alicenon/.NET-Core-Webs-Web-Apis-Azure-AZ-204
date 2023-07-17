@@ -1,0 +1,132 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section scripts
+    {
+    <script>
+        $(document).ready(function () {
+            cargarOficios();
+
+          $("#botonbuscar").click(function () {
+                var oficio = $("#oficios").val();
+                cargarEmpleadosOficio(oficio);
+           });
+
+
+          $("#botonincremento").click(function () {
+                var oficio = $("#oficios").val();
+                var incremento = $("#incremento").val();
+                var urlapi =
+                    "https://06ejemwebapiempleadosoficiosput20230531165215.azurewebsites.net/api/Empleados/IncrementarSalarios/"
+                    + incremento + "/" + oficio;
+                $.ajax({
+                    url: urlapi
+                    , type: "PUT"
+                    , contentType: "application/json"
+                    , success: function (data) {
+                        cargarEmpleadosOficio(oficio);
+                    }
+                });
+            });
+
+
+
+
+
+        });
+
+
+               function cargarOficios() {
+            var urlapi = "https://06ejemwebapiempleadosoficiosput20230531165215.azurewebsites.net/api/Empleados/RecuperarOficios";
+            $.ajax({
+                url: urlapi
+                , type: "GET"
+                , contentType: "application/json"
+                , success: function (data) {
+                    var html = "";
+                    $.each(data, function (key, oficio) {
+                        html += "<option value='" + oficio + "'>";
+                        html += oficio;
+                        html += "</option>";
+                    });
+                    $("#oficios").html(html);
+                }
+            });
+        }
+
+        function cargarEmpleadosOficio(oficio) {
+            var urlapi =
+                "https://06ejemwebapiempleadosoficiosput20230531165215.azurewebsites.net/api/Empleados/EmpleadosOficio/"
+                + oficio;
+            $.ajax({
+                url: urlapi
+                , type: "GET"
+                , contentType: "application/json"
+                , success: function (data) {
+                    $("#empleados tbody").html("");
+                    var html = "";
+                    $.each(data, function (key, emp) {
+                        html += "<tr>";
+                        html += "<td>" + emp.apellido + "</td>";
+                        html += "<td>" + emp.oficio + "</td>";
+                        html += "<td>" + emp.salario + "</td>";
+                        html += "</tr>";
+                    });
+                    $("#empleados tbody").html(html);
+                }
+            });
+        }
+
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="jumbotron">
+    <form>
+        <div class="form-group">
+            <label>Oficios: </label>
+            <select id="oficios" class="form-control"></select>
+            <br />
+            <button type="button" class="btn-success" id="botonbuscar">
+                Buscar empleados
+            </button>
+        </div>
+        <div class="form-group">
+            <label>Incremento salarial</label>
+            <input type="text" id="incremento" class="form-control" />
+            <br />
+            <button type="button" class="btn-default" id="botonincremento">
+                Subir salario empleados
+            </button>
+        </div>
+    </form>
+    <hr />
+    <table class="table table-responsive" id="empleados">
+        <thead>
+            <tr>
+                <th>APELLIDO</th>
+                <th>OFICIO</th>
+                <th>SALARIO</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>

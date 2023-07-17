@@ -1,0 +1,101 @@
+﻿@section scripts
+{
+
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            todasPersonas();
+        });
+
+        //RECUPERAR TODAS LAS PERSONAS
+        function todasPersonas() {
+            var item = "";
+            $('#tabla').addClass('table bg-primary');
+
+            $('#tabla tbody').html('').css({
+                'background-color': '#444444'
+            });
+
+            $('tbody').on('mouseenter', function () {
+                $(this).stop().animate({
+                    'color': '#000000'
+                }, 300); // Duración de animación de 500 milisegundos (medio segundo)
+            });
+
+            $('tbody').on('mouseleave', function () {
+                $(this).stop().animate({
+                    'color': '' // Elimina el estilo aplicado anteriormente
+                }, 300); // Duración de animación de 500 milisegundos (medio segundo)
+            });
+         
+
+
+
+            $.getJSON('https://05ejemapiempleadoscore20230530181946.azurewebsites.net/api/Empleados/', function (data) {
+                $.each(data, function (key, value) {
+                    item += "<tr>";
+                    item += "<td>" + value.idEmpleado + "</td>";
+                    item += "<td>" + value.apellido + "</td>";
+                    item += "<td>" + value.oficio + "</td>";
+                    item += "<td>" + value.salario + "</td>";
+                    item += "<td>" + value.departamento + "</td>";
+
+                    item += "</tr>";
+                });
+                $('#tabla tbody').append(item);
+            });
+
+
+
+         
+        };
+
+
+
+    </script>
+}
+<div class="hero-unit ">
+    <h2>PERSONAS(4 colum) y Empleados de azure (5 colum)</h2>
+    <div>
+        <table id="tabla" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>IdEmpleado</th>
+                    <th>Apellido</th>
+                    <th>Oficio</th>
+                    <th>Salario</th>
+                    <th>Departamento</th>
+
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <h3 style="color:red" id="mensaje"></h3>
+
+
+
+</div>
+
+<script>
+        $(document).ready(function () {
+
+            $('tbody').on('mouseenter', function () {
+                $(this).stop().animate({
+                    'color': 'green'
+                }, 300); // Duración de animación de 500 milisegundos (medio segundo)
+            });
+
+            $('tbody').on('mouseleave', function () {
+                $(this).stop().animate({
+                    'color': '' // Elimina el estilo aplicado anteriormente
+                }, 300); // Duración de animación de 500 milisegundos (medio segundo)
+            });
+        });
+
+</script>
+
+
+
+@Html.ActionLink("Texto del enlace", "Acción", "Controlador", null, new { @class = "btn btn-primary" })  

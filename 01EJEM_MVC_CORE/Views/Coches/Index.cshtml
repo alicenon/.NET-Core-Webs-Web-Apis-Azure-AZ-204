@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+    <h4>Conduciendo mi Coche...</h4>
+    <img src="~/images/@Model.Imagen" />
+    <h1 style="color:forestgreen">
+        Marca: @Model.Marca, Modelo: @Model.Modelo
+    </h1>
+    <h2 style="color:red">
+        Velocidad Máxima: @Model.VelocidadMaxima
+    </h2>
+</div>
+@using (Html.BeginForm())
+{
+    <div>
+        <button type="submit" class="btn-success" name="accion" value="acelerar">
+            Acelerar
+        </button>
+        <button type="submit" class="btn-danger" name="accion" value="frenar">
+            Frenar
+        </button>
+    </div>
+}
+<div>
+    <h2 style="color:blue">
+        Velocidad actual: @Model.VelocidadActual
+    </h2>
+    <a asp-action="Index" asp-controller="Home">Volver a Index</a>
+</div>
